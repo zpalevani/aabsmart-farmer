@@ -4,7 +4,7 @@
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/aabsmart-farmer.git
+   git clone https://github.com/zpalevani/aabsmart-farmer.git
    cd aabsmart-farmer
    ```
 

@@ -47,7 +47,7 @@ AabSmart Farmer is an agentic AI system that provides personalized, water-effici
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/aabsmart-farmer.git
+   git clone https://github.com/zpalevani/aabsmart-farmer.git
    cd aabsmart-farmer
    ```
 
