@@ -81,7 +81,8 @@ AabSmart Farmer is an agentic AI system that provides personalized, water-effici
 
 4. Run the example script:
    ```bash
-   python examples/demo.py
+   python examples/demo.py or
+   python -m examples.demo
    ```
    
    Or use the Jupyter notebook:
