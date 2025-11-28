@@ -17,6 +17,7 @@ AabSmart Farmer is an agentic AI system that provides personalized, water-effici
 - **Evaluation**: Golden test cases and LLM-as-judge critic
 
 ## Architecture
+![Generated Image November 27, 2025 - 10_48PM](https://github.com/user-attachments/assets/e15085dd-83fa-4b8a-9d52-3a25072a360a)
 
 ### Agents
 
