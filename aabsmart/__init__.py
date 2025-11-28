@@ -1,5 +1,5 @@
 """
-AabSmart Farmer - A bilingual agricultural advisory system for water-limited farming.
+AabSmart Farmer - An agricultural advisory system for water-limited farming.
 """
 
 __version__ = "1.0.0"

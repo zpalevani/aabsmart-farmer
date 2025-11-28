@@ -1,6 +1,6 @@
 # AabSmart Farmer
 
-A bilingual (Persian + English) agricultural advisory system for small farmers in water-limited conditions. Built as a multi-agent system powered by Google Gemini.
+An agricultural advisory system for small farmers in water-limited conditions. Built as a multi-agent system powered by Google Gemini.
 
 ## Overview
 
@@ -8,10 +8,10 @@ AabSmart Farmer is an agentic AI system that provides personalized, water-effici
 
 ## Features
 
-- **Multi-Agent Architecture**: Coordinated agents for profiling, water footprint analysis, agronomy advice, scenario generation, and bilingual coaching
+- **Multi-Agent Architecture**: Coordinated agents for profiling, water footprint analysis, agronomy advice, scenario generation, and coaching
 - **Custom Tools**: Water footprint calculator and mini-RAG retrieval system
 - **Memory & Sessions**: Persistent farmer profiles and conversation history
-- **Bilingual Support**: Responses in Persian (Farsi) followed by English summaries
+- **Clear English Responses**: Practical, actionable advice in simple English
 - **Observability**: Interaction logging and system state inspection
 - **Evaluation**: Golden test cases and LLM-as-judge critic
 
@@ -23,7 +23,7 @@ AabSmart Farmer is an agentic AI system that provides personalized, water-effici
 2. **Water Footprint Agent**: Calculates water usage per crop and total water footprint
 3. **Agronomy RAG Agent**: Retrieves relevant agricultural tips from knowledge base
 4. **Scenario Agent**: Generates conservative and water-saving crop scenarios
-5. **Coach Agent**: Generates bilingual responses using Gemini
+5. **Coach Agent**: Generates clear, practical responses using Gemini
 6. **Planner Agent**: Orchestrates all agents in sequence
 
 ### Tools
@@ -102,11 +102,11 @@ initialize_gemini()
 # Run a conversation turn
 result = run_turn(
     farmer_id="farmer_001",
-    user_message="سلام. من ۵ هکتار زمین دارم و گندم و جو می‌کارم. آب محدود است."
+    user_message="I have 5 hectares of land and grow wheat and barley. Water is limited."
 )
 
 # Access results
-print(result["answer"])  # Bilingual response
+print(result["answer"])  # Agricultural advice
 print(result["water_footprint"])  # Water calculations
 print(result["scenarios"])  # Generated scenarios
 ```
@@ -199,17 +199,16 @@ If you're running this in Kaggle, the system will automatically try to load the 
 
 ## Example Output
 
-The system generates bilingual responses:
+The system generates clear, practical advice:
 
-**SECTION 1 (Persian)**:
-```
-سلام. با توجه به اطلاعات شما، توصیه می‌کنم که...
-[Detailed Persian advice]
-```
-
-**SECTION 2 (English)**:
 ```
 Based on your profile, we recommend reducing rice cultivation area by 50% and switching to drip irrigation. This could save approximately 30% of your total water usage while maintaining crop diversity.
+
+Here are some practical steps:
+1. Consider replacing 50% of your rice area with lower-water crops like wheat or barley
+2. Invest in a drip irrigation system - it can reduce water waste by up to 40%
+3. Monitor soil moisture before irrigation to avoid over-watering
+...
 ```
 
 ## Contributing

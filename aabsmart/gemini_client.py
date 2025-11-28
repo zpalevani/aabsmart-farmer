@@ -41,7 +41,7 @@ def call_gemini(
     system_prompt: str,
     user_prompt: str,
     temperature: float = 0.2,
-    model_name: str = "gemini-1.5-flash-latest"
+    model_name: str = "gemini-1.5-flash"
 ) -> str:
     """
     Call Gemini API with system instruction and user prompt.

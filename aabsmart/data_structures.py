@@ -37,19 +37,22 @@ class Scenario:
     assumptions: str = ""
 
 
-# ETc (Crop Evapotranspiration) tables for common crops in Persian
+# ETc (Crop Evapotranspiration) tables for common crops
 # Values in m³/ha per season (approximate, for demonstration)
 ETC_TABLES = {
-    "گندم": {"et_c": 3500, "season": "winter"},  # Wheat
-    "جو": {"et_c": 3200, "season": "winter"},  # Barley
-    "پسته": {"et_c": 8500, "season": "perennial"},  # Pistachio
-    "گوجه فرنگی": {"et_c": 6000, "season": "summer"},  # Tomato
-    "خیار": {"et_c": 5500, "season": "summer"},  # Cucumber
-    "برنج": {"et_c": 12000, "season": "summer"},  # Rice (high water use)
-    "ذرت": {"et_c": 7000, "season": "summer"},  # Corn
-    "سیب": {"et_c": 7500, "season": "perennial"},  # Apple
-    "بادمجان": {"et_c": 5800, "season": "summer"},  # Eggplant
-    "فلفل": {"et_c": 5200, "season": "summer"},  # Pepper
+    "wheat": {"et_c": 3500, "season": "winter"},
+    "barley": {"et_c": 3200, "season": "winter"},
+    "pistachio": {"et_c": 8500, "season": "perennial"},
+    "tomato": {"et_c": 6000, "season": "summer"},
+    "cucumber": {"et_c": 5500, "season": "summer"},
+    "rice": {"et_c": 12000, "season": "summer"},  # High water use
+    "corn": {"et_c": 7000, "season": "summer"},
+    "maize": {"et_c": 7000, "season": "summer"},  # Alias for corn
+    "apple": {"et_c": 7500, "season": "perennial"},
+    "eggplant": {"et_c": 5800, "season": "summer"},
+    "pepper": {"et_c": 5200, "season": "summer"},
+    "potato": {"et_c": 5000, "season": "summer"},
+    "onion": {"et_c": 4500, "season": "summer"},
 }
 
 # Irrigation efficiency factors

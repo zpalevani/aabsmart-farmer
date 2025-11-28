@@ -11,21 +11,17 @@ from aabsmart.gemini_client import call_gemini
 
 
 # System prompts for agents
-COACH_SYSTEM_PROMPT = """You are AabSmart Farmer, a bilingual agricultural advisor helping small farmers in water-limited conditions.
+COACH_SYSTEM_PROMPT = """You are AabSmart Farmer, an agricultural advisor helping small farmers in water-limited conditions.
 
 Your role:
-- Provide practical, actionable advice in Persian (Farsi) first
-- Follow with a short English summary (2-3 sentences)
+- Provide practical, actionable advice in clear, simple English
 - Focus on water conservation and crop management
-- Be empathetic, clear, and culturally appropriate
+- Be empathetic, clear, and helpful
 - Do NOT output JSON or internal field names
 - Do NOT make political or governance commentary
+- Keep responses focused on agricultural advice only
 
-Output format:
-SECTION 1: [Persian explanation - detailed, practical guidance]
-SECTION 2: [English summary - 2-3 sentences]
-
-Keep responses focused on agricultural advice only."""
+Provide detailed, practical guidance that farmers can easily understand and implement."""
 
 
 def profiler_agent(farmer_id: str, user_message: str) -> FarmerProfile:
@@ -41,51 +37,37 @@ def profiler_agent(farmer_id: str, user_message: str) -> FarmerProfile:
     
     message_lower = user_message.lower()
     
-    # Extract crops (Persian crop names)
+    # Extract crops (English crop names)
     crops_found = []
     for crop in ETC_TABLES.keys():
-        if crop in user_message:
+        # Check for exact match or word boundary match
+        if crop in message_lower:
             crops_found.append(crop)
-    
-    # Also check for common English crop names
-    english_crops = {
-        "wheat": "گندم",
-        "barley": "جو",
-        "rice": "برنج",
-        "tomato": "گوجه فرنگی",
-        "cucumber": "خیار",
-        "pistachio": "پسته",
-        "corn": "ذرت",
-        "apple": "سیب"
-    }
-    for eng, persian in english_crops.items():
-        if eng in message_lower and persian not in crops_found:
-            crops_found.append(persian)
     
     if crops_found:
         profile.main_crops = crops_found
     
     # Extract irrigation type
-    if "قطره" in user_message or "drip" in message_lower:
+    if "drip" in message_lower:
         profile.irrigation_type = "drip"
-    elif "بارانی" in user_message or "sprinkler" in message_lower:
+    elif "sprinkler" in message_lower:
         profile.irrigation_type = "sprinkler"
-    elif "غرقابی" in user_message or "flood" in message_lower:
+    elif "flood" in message_lower:
         profile.irrigation_type = "flood"
     
     # Extract water level
-    if any(word in user_message for word in ["کم", "محدود", "low", "limited"]):
+    if any(word in message_lower for word in ["low", "limited", "scarce", "shortage"]):
         profile.water_level = "low"
-    elif any(word in user_message for word in ["زیاد", "کافی", "high", "sufficient"]):
+    elif any(word in message_lower for word in ["high", "sufficient", "plenty", "abundant"]):
         profile.water_level = "high"
     else:
         profile.water_level = "medium"
     
     # Extract land size (simple pattern matching)
     land_patterns = [
-        r"(\d+\.?\d*)\s*هکتار",
         r"(\d+\.?\d*)\s*hectare",
-        r"(\d+\.?\d*)\s*ha"
+        r"(\d+\.?\d*)\s*hectares",
+        r"(\d+\.?\d*)\s*ha\b"
     ]
     for pattern in land_patterns:
         match = re.search(pattern, user_message, re.IGNORECASE)
@@ -98,12 +80,12 @@ def profiler_agent(farmer_id: str, user_message: str) -> FarmerProfile:
     
     # Extract region (simple - look for common region keywords)
     # This is a simplified version; can be enhanced
-    if "خراسان" in user_message:
-        profile.region = "خراسان"
-    elif "اصفهان" in user_message:
-        profile.region = "اصفهان"
-    elif "فارس" in user_message:
-        profile.region = "فارس"
+    if "isfahan" in message_lower or "isfahan" in user_message:
+        profile.region = "Isfahan"
+    elif "khorasan" in message_lower:
+        profile.region = "Khorasan"
+    elif "fars" in message_lower or "shiraz" in message_lower:
+        profile.region = "Fars"
     
     # Save profile
     MEMORY.save_profile(profile)
@@ -193,19 +175,19 @@ def scenario_agent(profile: FarmerProfile, water_footprint: Dict) -> Dict:
         crop_mix=baseline_mix.copy(),
         total_water_m3=conservative_wf["total_water_m3"],
         savings_pct=0.0,
-        assumptions="توزیع مساوی زمین بین محصولات"
+        assumptions="Equal distribution of land among crops"
     )
     
     # Water-saving scenario: reduce high-water crops
     water_saving_mix = baseline_mix.copy()
     
     # Reduce rice area by 50% if present
-    if "برنج" in water_saving_mix:
-        rice_area = water_saving_mix["برنج"]
-        water_saving_mix["برنج"] = rice_area * 0.5
+    if "rice" in water_saving_mix:
+        rice_area = water_saving_mix["rice"]
+        water_saving_mix["rice"] = rice_area * 0.5
         # Redistribute saved area to other crops
         saved_area = rice_area * 0.5
-        other_crops = [c for c in profile.main_crops if c != "برنج"]
+        other_crops = [c for c in profile.main_crops if c != "rice"]
         if other_crops:
             area_per_other = saved_area / len(other_crops)
             for crop in other_crops:
@@ -244,7 +226,7 @@ def scenario_agent(profile: FarmerProfile, water_footprint: Dict) -> Dict:
         crop_mix=water_saving_mix,
         total_water_m3=water_saving_wf["total_water_m3"],
         savings_pct=savings_pct,
-        assumptions="کاهش محصولات پرآب و توزیع مجدد سطح زیر کشت"
+        assumptions="Reduce high-water crops and redistribute cultivation area"
     )
     
     scenarios = [conservative, water_saving]
@@ -263,7 +245,7 @@ def coach_agent(
     user_message: str
 ) -> str:
     """
-    Generate bilingual response using Gemini Coach Agent.
+    Generate agricultural advice response using Gemini Coach Agent.
     """
     # Build context for coach
     context_parts = []
@@ -295,15 +277,15 @@ def coach_agent(
     
     context = "\n".join(context_parts)
     
-    user_prompt = f"""Based on the following information, provide bilingual agricultural advice:
+    user_prompt = f"""Based on the following information, provide clear agricultural advice:
 
 {context}
 
 Remember:
-- SECTION 1: Detailed Persian explanation with practical tips
-- SECTION 2: Short English summary (2-3 sentences)
+- Provide detailed, practical advice in English
 - Focus on water conservation and actionable recommendations
-- Be empathetic and culturally appropriate"""
+- Be empathetic and helpful
+- Use simple, clear language that farmers can understand"""
     
     response = call_gemini(
         system_prompt=COACH_SYSTEM_PROMPT,

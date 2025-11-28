@@ -36,7 +36,7 @@ from aabsmart import run_turn
 from aabsmart.gemini_client import initialize_gemini
 
 initialize_gemini()
-result = run_turn("farmer_001", "سلام. من گندم می‌کارم.")
+result = run_turn("farmer_001", "I grow wheat and have limited water.")
 ```
 
 ## Key Functions
@@ -56,7 +56,7 @@ result = run_turn("farmer_001", "سلام. من گندم می‌کارم.")
    - Water Footprint Agent (calculate water)
    - Agronomy RAG Agent (retrieve tips)
    - Scenario Agent (generate scenarios)
-   - Coach Agent (generate bilingual response)
+   - Coach Agent (generate agricultural advice)
 4. Response returned with all metadata
 
 ## Testing

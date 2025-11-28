@@ -15,7 +15,7 @@ def calculate_water_footprint(
     Calculate water footprint for a crop mix.
     
     Args:
-        crop_mix: Dictionary mapping crop names (Persian) to area in hectares
+        crop_mix: Dictionary mapping crop names (English) to area in hectares
         irrigation_type: Type of irrigation ("flood", "drip", "sprinkler", "unknown")
     
     Returns:
@@ -48,26 +48,26 @@ def calculate_water_footprint(
     recommended_switches = []
     
     # Check for high-water crops
-    high_water_crops = ["برنج"]  # Rice
+    high_water_crops = ["rice"]  # Rice
     for crop in high_water_crops:
         if crop in crop_mix and crop_mix[crop] > 0:
             recommended_switches.append(
-                f"کاهش سطح زیر کشت {crop} می‌تواند مصرف آب را کاهش دهد"
+                f"Reducing {crop} cultivation area can significantly reduce water consumption"
             )
     
     # Check irrigation efficiency
     if irrigation_type == "flood":
         recommended_switches.append(
-            "استفاده از سیستم آبیاری قطره‌ای می‌تواند مصرف آب را تا 40% کاهش دهد"
+            "Switching to drip irrigation can reduce water use by up to 40%"
         )
     elif irrigation_type == "unknown":
         recommended_switches.append(
-            "بهبود سیستم آبیاری می‌تواند مصرف آب را کاهش دهد"
+            "Improving irrigation system can reduce water consumption"
         )
     
     assumptions = (
-        f"فرض بر این است که راندمان آبیاری {irrigation_type} برابر {efficiency*100:.0f}% است. "
-        f"مقادیر ETc بر اساس داده‌های منطقه‌ای متوسط محاسبه شده است."
+        f"Assumed irrigation efficiency for {irrigation_type} is {efficiency*100:.0f}%. "
+        f"ETc values are based on average regional data."
     )
     
     return {
@@ -78,55 +78,55 @@ def calculate_water_footprint(
     }
 
 
-# Mini-RAG corpus: Persian agricultural tips for water conservation
+# Mini-RAG corpus: Agricultural tips for water conservation
 AGRONOMY_TIPS = [
     {
         "id": 1,
-        "title": "آبیاری در زمان مناسب",
-        "summary": "آبیاری در ساعات اولیه صبح یا عصر باعث کاهش تبخیر آب می‌شود. از آبیاری در ساعات گرم روز خودداری کنید.",
-        "keywords": ["آبیاری", "زمان", "تبخیر", "صبح", "عصر"]
+        "title": "Irrigate at Optimal Times",
+        "summary": "Irrigating in early morning or evening reduces water evaporation. Avoid irrigation during hot midday hours.",
+        "keywords": ["irrigation", "time", "evaporation", "morning", "evening"]
     },
     {
         "id": 2,
-        "title": "مالچ‌پاشی",
-        "summary": "استفاده از مالچ (کاه، برگ خشک) در اطراف گیاهان باعث حفظ رطوبت خاک و کاهش نیاز به آبیاری می‌شود.",
-        "keywords": ["مالچ", "رطوبت", "خاک", "کاهش آبیاری"]
+        "title": "Use Mulching",
+        "summary": "Using mulch (straw, dry leaves) around plants helps retain soil moisture and reduces irrigation needs.",
+        "keywords": ["mulch", "moisture", "soil", "reduce irrigation"]
     },
     {
         "id": 3,
-        "title": "کاشت گیاهان مقاوم به خشکی",
-        "summary": "انتخاب ارقام مقاوم به خشکی و کم‌آب می‌تواند نیاز آبیاری را تا 30% کاهش دهد.",
-        "keywords": ["مقاوم", "خشکی", "ارقام", "کاهش آب"]
+        "title": "Plant Drought-Resistant Varieties",
+        "summary": "Choosing drought-resistant and low-water crop varieties can reduce irrigation needs by up to 30%.",
+        "keywords": ["resistant", "drought", "varieties", "reduce water"]
     },
     {
         "id": 4,
-        "title": "آبیاری قطره‌ای",
-        "summary": "سیستم آبیاری قطره‌ای آب را مستقیماً به ریشه گیاه می‌رساند و از هدررفت آب جلوگیری می‌کند.",
-        "keywords": ["قطره‌ای", "ریشه", "هدررفت", "کارایی"]
+        "title": "Drip Irrigation",
+        "summary": "Drip irrigation systems deliver water directly to plant roots and prevent water waste.",
+        "keywords": ["drip", "roots", "waste", "efficiency"]
     },
     {
         "id": 5,
-        "title": "مدیریت خاک",
-        "summary": "افزودن مواد آلی به خاک باعث بهبود ظرفیت نگهداری آب و کاهش نیاز به آبیاری می‌شود.",
-        "keywords": ["خاک", "مواد آلی", "نگهداری آب", "کود"]
+        "title": "Soil Management",
+        "summary": "Adding organic matter to soil improves water retention capacity and reduces irrigation needs.",
+        "keywords": ["soil", "organic matter", "water retention", "compost"]
     },
     {
         "id": 6,
-        "title": "چرخش محصولات",
-        "summary": "چرخش محصولات با گیاهان کم‌آب می‌تواند فشار بر منابع آبی را کاهش دهد.",
-        "keywords": ["چرخش", "محصولات", "کم‌آب", "منابع"]
+        "title": "Crop Rotation",
+        "summary": "Rotating crops with low-water plants can reduce pressure on water resources.",
+        "keywords": ["rotation", "crops", "low-water", "resources"]
     },
     {
         "id": 7,
-        "title": "نظارت بر رطوبت خاک",
-        "summary": "استفاده از رطوبت‌سنج یا روش‌های ساده برای بررسی رطوبت خاک قبل از آبیاری از آبیاری غیرضروری جلوگیری می‌کند.",
-        "keywords": ["رطوبت", "خاک", "نظارت", "آبیاری"]
+        "title": "Monitor Soil Moisture",
+        "summary": "Using a moisture meter or simple methods to check soil moisture before irrigation prevents unnecessary watering.",
+        "keywords": ["moisture", "soil", "monitoring", "irrigation"]
     },
     {
         "id": 8,
-        "title": "کاشت در تراکم مناسب",
-        "summary": "کاشت با تراکم مناسب باعث استفاده بهینه از آب و کاهش رقابت بین گیاهان می‌شود.",
-        "keywords": ["تراکم", "کاشت", "بهینه", "رقابت"]
+        "title": "Optimal Planting Density",
+        "summary": "Planting at appropriate density optimizes water use and reduces competition between plants.",
+        "keywords": ["density", "planting", "optimal", "competition"]
     }
 ]
 
@@ -167,6 +167,6 @@ def retrieve_agronomy_tips(
     
     return {
         "tips": selected_tips,
-        "sources": ["AabSmart Farmer Knowledge Base"]
+        "sources": ["AabSmart Farmer Knowledge Base - Water Conservation Tips"]
     }
 

@@ -4,6 +4,11 @@ Demo script for AabSmart Farmer system.
 Run this to see the system in action.
 """
 
+import sys
+import os
+# Add parent directory to Python path so we can import aabsmart
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from aabsmart import run_turn, run_golden
 from aabsmart.gemini_client import initialize_gemini
 
@@ -24,18 +29,18 @@ def main():
         print("  export GEMINI_API_KEY='your-api-key'")
         return
     
-    # Example 1: Persian query
+    # Example 1: Basic farmer query
     print("\n" + "="*80)
-    print("Example 1: Persian Farmer Query")
+    print("Example 1: Basic Farmer Query")
     print("="*80)
     result1 = run_turn(
         farmer_id="farmer_001",
-        user_message="سلام. من ۵ هکتار زمین دارم و گندم و جو می‌کارم. آب محدود است و از آبیاری غرقابی استفاده می‌کنم."
+        user_message="I have 5 hectares of land and grow wheat and barley. Water is limited and I use flood irrigation."
     )
     
-    # Example 2: English query
+    # Example 2: High-water crops
     print("\n" + "="*80)
-    print("Example 2: English Query with High-Water Crops")
+    print("Example 2: High-Water Crops")
     print("="*80)
     result2 = run_turn(
         farmer_id="farmer_002",
@@ -48,7 +53,7 @@ def main():
     print("="*80)
     result3 = run_turn(
         farmer_id="farmer_003",
-        user_message="من در اصفهان هستم. ۴ هکتار زمین دارم. پسته و گوجه فرنگی می‌کارم. آبیاری قطره‌ای استفاده می‌کنم."
+        user_message="I'm in Isfahan. I have 4 hectares of land. I grow pistachio and tomato. I use drip irrigation."
     )
     
     print("\n" + "="*80)

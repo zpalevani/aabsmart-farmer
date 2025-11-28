@@ -15,8 +15,8 @@ GOLDEN_TEST_CASES = [
     {
         "id": "test_1",
         "farmer_id": "farmer_001",
-        "user_message": "سلام. من ۵ هکتار زمین دارم و گندم و جو می‌کارم. آب محدود است.",
-        "expected_keywords": ["گندم", "جو", "آب"],
+        "user_message": "I have 5 hectares of land and grow wheat and barley. Water is limited.",
+        "expected_keywords": ["wheat", "barley", "water"],
         "description": "Basic wheat and barley farmer with limited water"
     },
     {
@@ -29,8 +29,8 @@ GOLDEN_TEST_CASES = [
     {
         "id": "test_3",
         "farmer_id": "farmer_003",
-        "user_message": "من در اصفهان هستم. پسته و گوجه فرنگی دارم. آبیاری قطره‌ای استفاده می‌کنم.",
-        "expected_keywords": ["پسته", "گوجه فرنگی", "قطره"],
+        "user_message": "I'm in Isfahan. I have pistachio and tomato. I use drip irrigation.",
+        "expected_keywords": ["pistachio", "tomato", "drip"],
         "description": "Pistachio and tomato with drip irrigation"
     }
 ]
