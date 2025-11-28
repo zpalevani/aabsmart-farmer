@@ -1,4 +1,5 @@
 # AabSmart Farmer
+![Nano Banana Generated Image November 27, 2025 - 6_34PM](https://github.com/user-attachments/assets/4055526a-d0e1-48f1-9d37-2afee66e8691)
 
 An agricultural advisory system for small farmers in water-limited conditions. Built as a multi-agent system powered by Google Gemini.
 
