@@ -41,7 +41,7 @@ def call_gemini(
     system_prompt: str,
     user_prompt: str,
     temperature: float = 0.2,
-    model_name: str = "gemini-1.5-flash"
+    model_name: str = "gemini-pro"
 ) -> str:
     """
     Call Gemini API with system instruction and user prompt.
@@ -50,29 +50,47 @@ def call_gemini(
         system_prompt: System instruction for the model
         user_prompt: User message/prompt
         temperature: Sampling temperature (0.0-1.0)
-        model_name: Gemini model name
+        model_name: Gemini model name (default: "gemini-pro")
     
     Returns:
         Generated text response
     """
-    try:
-        model = genai.GenerativeModel(
-            model_name,
-            system_instruction=system_prompt
-        )
-        
-        generation_config = {
-            "temperature": temperature,
-            "top_p": 0.95,
-            "top_k": 40,
-        }
-        
-        response = model.generate_content(
-            user_prompt,
-            generation_config=generation_config
-        )
-        
-        return response.text
-    except Exception as e:
-        return f"Error calling Gemini API: {str(e)}"
+    # List of models to try in order of preference
+    models_to_try = [
+        model_name,  # Try the requested model first
+        "gemini-pro",  # Standard model
+        "gemini-1.5-pro",  # Alternative
+        "models/gemini-pro",  # Full path format
+    ]
+    
+    last_error = None
+    for model in models_to_try:
+        try:
+            gen_model = genai.GenerativeModel(
+                model,
+                system_instruction=system_prompt
+            )
+            
+            generation_config = {
+                "temperature": temperature,
+                "top_p": 0.95,
+                "top_k": 40,
+            }
+            
+            response = gen_model.generate_content(
+                user_prompt,
+                generation_config=generation_config
+            )
+            
+            return response.text
+        except Exception as e:
+            last_error = e
+            # If this is not a 404/model not found error, return immediately
+            if "404" not in str(e) and "not found" not in str(e).lower():
+                return f"Error calling Gemini API: {str(e)}"
+            # Otherwise, try next model
+            continue
+    
+    # If all models failed, return error
+    return f"Error calling Gemini API: Could not find a working model. Last error: {str(last_error)}"
 
